@@ -29,7 +29,14 @@ If you want to give it a shot without a mod though, this program is simple enoug
 
 ## Running on a schedule
 
-I do this with a Windows Task, create a basic task to run java.exe from the JDK download, put `jar qe-runner-X.Y.jar` and your parameters into the arguments field. Some caveats:
+I do this with a Windows Task, create a basic task to run java.exe from the JDK download, put `jar qe-runner-X.Y.jar` and your parameters into the arguments field. 
+
+### Example from my server
+
+Program: `C:\jdk-18.0.2.1\bin\java.exe`
+Add Arguments: `-Dprops=247ffa.properties -jar C:\quakeserverlauncher\qe-runner-3.4.jar`
+
+### Some caveats
 
 - The computer needs to be unlocked
 - The user needs be logged in
