@@ -1,6 +1,9 @@
 # qe-launcher
 
-This program is meant to restart Quake Enhanced servers on a schedule. It expects Steam to already be running, and you should probably use a recent [Java >= 11](https://jdk.java.net/18/) version.
+This program is meant to restart Quake Enhanced servers on a schedule. It expects 
+
+* Steam to already be running
+* A recent [Java >= 11](https://jdk.java.net/18/) version installed
 
 ## General Operation
 
@@ -21,18 +24,19 @@ If your Quake install location is different than the default, you'd like to chan
     * The `quake->` tag launches a Quake multiplayer match with the specified paremeters
     * Stuff between `->` and `=` characters is just a description (it shouldn't contain `os->` or `quake->`)
     * The `#` characters are comments
+	* To make sure your commands run in order, make sure to use the XXXX number format: 0001 for first, 0002 for second ... 0100 for 100th
 
 ```
 
 # kill all quake instances
-1_os->kill = taskkill /F /IM Quake_x64_steam.exe /T
+0001_os->kill = taskkill /F /IM Quake_x64_steam.exe /T
 
 # moving files: double quotes around each parameter, and double backslashes for directories. <TIMESTAMP> gets replaced with a timestamp
-# 2_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr_<TIMESTAMP>.txt" 
-# 3_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout_<TIMESTAMP>.txt"
+# 0002_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr_<TIMESTAMP>.txt" 
+# 0003_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout_<TIMESTAMP>.txt"
 
 # for launching quake: no double quotes around, but do use double backslashes for directories
-4_quake->launch = C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1
+0004_quake->launch = C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1
 
 ```
 
@@ -48,13 +52,13 @@ If you want to give it a shot without a mod though, this program is simple enoug
 
 ## Running on a schedule
 
-I do this with a Windows Task scheduled for every 24 hours. To create one, open up Task Scheduled and select `Create a Basic Task` in the right hand column. The command to run is java.exe from the JDK download, and put `-jar qe-runner-X.Y.jar` and your parameters into the arguments field. 
+I do this with a Windows Task scheduled for every 24 hours. To create one, open up Task Scheduler from the Start menu and select `Create a Basic Task` in the right hand column. The command to run is java.exe from the JDK download, and put `-jar qe-runner-X.Y.jar` and your parameters into the arguments field. 
 
 ### Example from my server
 
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
 
-* Add Arguments: `-Dprops=247ffa.properties -jar C:\quakeserverlauncher\qe-runner-3.5.jar`
+* Add Arguments: `-Dprops=C:\quakeserverlauncher\launcher.properties -jar C:\quakeserverlauncher\qe-runner-3.6.jar`
 
 ### Some caveats when running the scheduled task
 
