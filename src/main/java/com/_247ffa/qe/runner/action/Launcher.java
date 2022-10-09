@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 
 public class Launcher extends ActionDecorator {
 
-	public Launcher(Action action, String command) {
+	protected final int maxPlayers;
+	
+	public Launcher(Action action, String command, int maxPlayers) {
 		super(action, command);
+		this.maxPlayers = maxPlayers;
 	}
 	
 	protected void menuDelay(Robot robot) throws InterruptedException {
@@ -42,7 +45,7 @@ public class Launcher extends ActionDecorator {
 		}
 	}
 
-	private void multiplayerLobbyMenu(Robot robot) throws InterruptedException {
+	protected void multiplayerLobbyMenu(Robot robot) throws InterruptedException {
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
@@ -57,7 +60,9 @@ public class Launcher extends ActionDecorator {
 		click(KeyEvent.VK_ENTER, robot);
 	}
 
-	private void multiplayerMatchSettingsMenu(Robot robot) throws InterruptedException {
+	protected void multiplayerMatchSettingsMenu(Robot robot) throws InterruptedException {
+		click(KeyEvent.VK_UP, robot);
+		setMaxPlayers(robot);
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
@@ -70,13 +75,23 @@ public class Launcher extends ActionDecorator {
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_ENTER, robot);
 	}
+	
+	protected void setMaxPlayers(Robot robot) throws InterruptedException {
+		for (int i = 0; i < 8; i++) {
+			click(KeyEvent.VK_LEFT, robot);
+		}
+		int initialOffset = 2;
+		for (int i = 0; i < maxPlayers - initialOffset; i++) {
+			click(KeyEvent.VK_RIGHT, robot);
+		}
+	}
 
-	private void multiplayerCategoryMenu(Robot robot) throws InterruptedException {
+	protected void multiplayerCategoryMenu(Robot robot) throws InterruptedException {
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_ENTER, robot);
 	}
 
-	private void multiplayerOnlineLocalMenu(Robot robot) throws InterruptedException {
+	protected void multiplayerOnlineLocalMenu(Robot robot) throws InterruptedException {
 		click(KeyEvent.VK_ENTER, robot);
 	}
 

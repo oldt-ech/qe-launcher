@@ -3,6 +3,7 @@ package com._247ffa.qe.runner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -46,6 +47,7 @@ public class Main {
 	}
 
 	protected Action parseAction(Properties properties) {
+		int maxPlayers = 16;
 		Action action = new Noop();
 		Map<String, String> sortedProperties = new TreeMap<String, String>();
 		for (Entry<Object, Object> item : properties.entrySet()) {
@@ -54,9 +56,12 @@ public class Main {
 
 		for (Entry<String, String> item : sortedProperties.entrySet()) {
 			if (item.getKey().contains("quake->")) {
-				action = new Launcher(action, item.getValue());
+				action = new Launcher(action, item.getValue(), maxPlayers);
 			} else if (item.getKey().contains("os->")) {
 				action = new OSCommand(action, item.getValue());
+			} else if (item.getKey().contains("setMaxPlayers->")) {
+				maxPlayers = Integer.valueOf(item.getValue());
+				System.out.println(LocalDateTime.now().toString() + " - Setting max players to " + maxPlayers);
 			}
 		}
 		return action;

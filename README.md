@@ -22,6 +22,7 @@ If your Quake install location is different than the default, you'd like to chan
     * You can have as many lines in the file as you want, they will be executed in the order of the number at the beginning
     * The `os->` tag runs a general command prompt command
     * The `quake->` tag launches a Quake multiplayer match with the specified paremeters
+    * The `setMaxPlayers->` tag sets the max number of players that can join. By default this will max the slider in the menu
     * Stuff between `->` and `=` characters is just a description (it shouldn't contain `os->` or `quake->`)
     * The `#` characters are comments
 	* To make sure your commands run in order, make sure to use the XXXX number format: 0001 for first, 0002 for second ... 0100 for 100th
@@ -35,8 +36,11 @@ If your Quake install location is different than the default, you'd like to chan
 # 0002_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stderr_<TIMESTAMP>.txt" 
 # 0003_os->cmd = cmd.exe /c move "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\Users\\games\\Saved Games\\Nightdive Studios\\Quake\\stdout_<TIMESTAMP>.txt"
 
+# max number of players
+# 0004_setMaxPlayers->val = 4
+
 # for launching quake: no double quotes around, but do use double backslashes for directories
-0004_quake->launch = C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1
+0005_quake->launch = C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1
 
 ```
 
