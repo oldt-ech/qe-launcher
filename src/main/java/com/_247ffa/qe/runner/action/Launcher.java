@@ -14,6 +14,9 @@ public class Launcher extends ActionDecorator {
 		super(action, command);
 		this.maxPlayers = maxPlayers;
 	}
+	protected void launchDelay() throws InterruptedException {
+		Thread.sleep(30000);
+	}
 	
 	protected void menuDelay(Robot robot) throws InterruptedException {
 		Thread.sleep(10000);
@@ -21,10 +24,12 @@ public class Launcher extends ActionDecorator {
 
 	protected void launch() {
 		try {
+			launchDelay();
 			Runtime run = Runtime.getRuntime();
 			Robot robot;
 			robot = new Robot();
 			run.exec(command);
+			launchDelay();
 
 			menuDelay(robot);
 			menuDelay(robot);

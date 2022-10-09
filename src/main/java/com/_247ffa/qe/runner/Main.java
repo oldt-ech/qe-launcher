@@ -3,25 +3,24 @@ package com._247ffa.qe.runner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
 
 import com._247ffa.qe.runner.action.Action;
-import com._247ffa.qe.runner.action.OSCommand;
+import com._247ffa.qe.runner.action.ConsoleTyper;
 import com._247ffa.qe.runner.action.Launcher;
 import com._247ffa.qe.runner.action.Noop;
+import com._247ffa.qe.runner.action.OSCommand;
+import com._247ffa.qe.runner.action.Validator;
 
 public class Main {
 
 	private final String defaultProperties;
-	private final String bundledFFAProperties;
 
 	public Main() {
 		defaultProperties = "default.properties";
-		bundledFFAProperties = "247ffa.properties";
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -37,8 +36,6 @@ public class Main {
 		String props = System.getProperty("props");
 		if (props == null) {
 			properties.load(classLoader.getResourceAsStream(defaultProperties));
-		} else if (bundledFFAProperties.equals(props)) {
-			properties.load(classLoader.getResourceAsStream(bundledFFAProperties));
 		} else {
 			properties.load(new FileInputStream(props));
 		}
@@ -48,6 +45,9 @@ public class Main {
 
 	protected Action parseAction(Properties properties) {
 		int maxPlayers = 16;
+		String validationEndpoint = "https://api.247ffa.com/api/v1/servers";
+		String validationQuake = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe"
+				+ " -skipmovies +g_showintromovie 0 +developer 1";
 		Action action = new Noop();
 		Map<String, String> sortedProperties = new TreeMap<String, String>();
 		for (Entry<Object, Object> item : properties.entrySet()) {
@@ -61,7 +61,20 @@ public class Main {
 				action = new OSCommand(action, item.getValue());
 			} else if (item.getKey().contains("setMaxPlayers->")) {
 				maxPlayers = Integer.valueOf(item.getValue());
-				System.out.println(LocalDateTime.now().toString() + " - Setting max players to " + maxPlayers);
+			} else if (item.getKey().contains("setValidationEndpoint->")) {
+				validationEndpoint = item.getValue();
+			} else if (item.getKey().contains("quakeIfDown->")) {
+				// chain:
+				// 1 - bring quake instance into focus by running with no args
+				// 2 - type quit in console
+				// 3 - launch again if down
+				String commandNoArgs = validationQuake.substring(0, validationQuake.indexOf(".exe")+4);
+				action = new Validator(action, validationEndpoint, item.getValue(), 
+							new Launcher(
+								new ConsoleTyper(new Noop(), commandNoArgs, "~quit"), 
+							validationQuake, maxPlayers));
+			} else if (item.getKey().contains("setValidationQuake->")) {
+				validationQuake = item.getValue();
 			}
 		}
 		return action;
