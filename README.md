@@ -28,7 +28,7 @@ The program behavior can be customized using a properties file:
     * Save your file somewhere with a `.properties` extension
     * Run the program like this `java -Dprops=c:\somefolder\example.properties -jar qe-runner-X.Y.jar`
 
-Default config:
+#### Default config
 
 ```
 
@@ -76,7 +76,7 @@ Default config:
 | Command                 	| Input                                    						| Default value if not in properties file                                                                                               	| Description                                                                                                                                                                                                                                                 	| Additional Notes                                                                                                                                                                                                                                                |
 |-------------------------	|------------------------------------------						|---------------------------------------------------------------------------------------------------------------------------------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|	
 | setValidationEndpoint-> 	| URI                                      						| https://api.247ffa.com/api/v1/servers                                                                                                 	| Endpoint to call that lists server statuses                                                                                                                                                                                                                 	|                                                                                                                                                                                                                                                                 |
-| quakeIfDown->           	| Steam mini-id                            						| N/A                                                                                                                                   	| If setValidationEndpoint-> says the server is offline by polling twice over two minutes: Brings setValidationQuake-> instance into focus by running it with no args, types quit in console, launches deathmatch server using setValidationQuake-> value 		|                                                                                                                                                                                                                                                                 |
+| quakeIfDown->           	| Steam mini-id                            						| N/A                                                                                                                                   	| If setValidationEndpoint-> says the server is offline by polling twice over two minutes: <br>1. Brings setValidationQuake-> instance into focus by running it with no args<br>2. Types quit in console<br>3. Launches deathmatch server using setValidationQuake-> value 		|                                                                                                                                                                                                                                                                 |
 | setValidationQuake->    	| Path to Quake Enhanced                   						| C:\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 	| Command to start a deathmatch server when used with quakeIfDown->                                                                                                                                                                                           	| This can only by used with quakeIfDown->                                                                                                                                                                                                                        |
 
 ## Running Launches/Re-launches on a Schedule
@@ -86,12 +86,12 @@ I do this with two Windows tasks scheduled every 24 hours to kill all running se
 To create Windows tasks, open up Task Scheduler from the Start menu and select `Create a Basic Task` in the right hand column. The command to run is java.exe from the JDK download, and put `-jar qe-runner-X.Y.jar` and your parameters into the arguments field. 
 
 
-## Examples from my servers
+### Examples from my servers
 I run six sandboxed servers on one machine, and my API is used to relaunch if needed. Each server has entries in the config files below. 
 
 For a one server setup or to not use my API to check for online status, the default config is better to use.
 
-### Windows task: every 24 hours - force kill all Quake processes and back up logs
+#### Windows task: every 24 hours - force kill all Quake processes and back up logs
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
 * Add Arguments: `-Dprops=C:\quakeserverlauncher\killer.properties -jar C:\quakeserverlauncher\qe-runner-3.8.jar`
 * Properties:
@@ -102,7 +102,7 @@ For a one server setup or to not use my API to check for online status, the defa
 
 ```
 
-### Windows task: twice hourly - restarts if server is down
+#### Windows task: twice hourly - restarts if server is down
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
 * Add Arguments: `-Dprops=C:\quakeserverlauncher\validator-launcher.properties -jar C:\quakeserverlauncher\qe-runner-3.8.jar`
 * Properties:
