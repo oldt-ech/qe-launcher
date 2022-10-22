@@ -93,7 +93,7 @@ For a one server setup or to not use my API to check for online status, the defa
 
 #### Windows task: every 24 hours - force kill all Quake processes and back up logs
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
-* Add Arguments: `-Dprops=C:\quakeserverlauncher\killer.properties -jar C:\quakeserverlauncher\qe-runner-3.8.jar`
+* Add Arguments: `-Dprops=C:\quakeserverlauncher\killer.properties -jar C:\quakeserverlauncher\qe-runner-4.0.jar`
 * Properties:
 
 ```
@@ -128,7 +128,7 @@ For a one server setup or to not use my API to check for online status, the defa
 
 #### Windows task: twice hourly - restarts if server is down
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
-* Add Arguments: `-Dprops=C:\quakeserverlauncher\validator-launcher.properties -jar C:\quakeserverlauncher\qe-runner-3.8.jar`
+* Add Arguments: `-Dprops=C:\quakeserverlauncher\validator-launcher.properties -jar C:\quakeserverlauncher\qe-runner-4.0.jar`
 * Properties:
 
 ```
