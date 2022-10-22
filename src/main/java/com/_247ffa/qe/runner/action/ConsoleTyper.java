@@ -5,6 +5,7 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class ConsoleTyper extends ActionDecorator {
 
@@ -16,11 +17,15 @@ public class ConsoleTyper extends ActionDecorator {
 	}
 
 	protected void launchDelay() throws InterruptedException {
-		Thread.sleep(60000);
+		Optional<String> delay = Optional.ofNullable(System.getProperty("debugLaunchDelay"))
+				.or(() -> Optional.of("60000"));
+		Thread.sleep(Integer.valueOf(delay.get()));
 	}
-	
+
 	protected void menuDelay(Robot robot) throws InterruptedException {
-		Thread.sleep(10000);
+		Optional<String> delay = Optional.ofNullable(System.getProperty("debugMenuDelay"))
+				.or(() -> Optional.of("10000"));
+		Thread.sleep(Integer.valueOf(delay.get()));
 	}
 
 	protected void type() {
@@ -33,10 +38,8 @@ public class ConsoleTyper extends ActionDecorator {
 			// let any movies play out (this has to be launched with no args to bring into focus)
 			launchDelay();
 
-			// clear out anything blocking console
-			robot.keyPress(KeyEvent.VK_ESCAPE);
-			robot.keyPress(KeyEvent.VK_ESCAPE);
-			robot.keyPress(KeyEvent.VK_ESCAPE);
+			// clear out anything blocking console (the bethesda modal screens can block us here)
+			click(KeyEvent.VK_ESCAPE, robot);
 			
 			// let anything blocking the console go away
 			menuDelay(robot); 
@@ -52,6 +55,7 @@ public class ConsoleTyper extends ActionDecorator {
 			}
 
 			click(KeyEvent.VK_ENTER, robot);
+			click(KeyEvent.VK_ESCAPE, robot);
 		} catch (IOException | AWTException | InterruptedException e) {
 			System.err.println(LocalDateTime.now().toString() + " - Couldn't type " + input + ". Exception " + e);
 		}
@@ -130,9 +134,17 @@ public class ConsoleTyper extends ActionDecorator {
 		case '8':
 			return KeyEvent.VK_8;
 		case '9':
-			return KeyEvent.VK_9;
+			return KeyEvent.VK_9;		
+		case '*':
+			return KeyEvent.VK_ASTERISK;
 		case ' ':
 			return KeyEvent.VK_SPACE;
+		case '_':
+			return KeyEvent.VK_UNDERSCORE;
+		case '.':
+			return KeyEvent.VK_PERIOD;
+		case '+':
+			return KeyEvent.VK_PLUS;
 		}
 		return character;
 	}

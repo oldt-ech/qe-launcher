@@ -5,21 +5,29 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Launcher extends ActionDecorator {
 
 	protected final int maxPlayers;
-	
-	public Launcher(Action action, String command, int maxPlayers) {
+	protected final int gameModeIndex;
+
+	public Launcher(Action action, String command, int maxPlayers, int gameModeIndex) {
 		super(action, command);
 		this.maxPlayers = maxPlayers;
+		this.gameModeIndex = gameModeIndex;
 	}
+
 	protected void launchDelay() throws InterruptedException {
-		Thread.sleep(30000);
+		Optional<String> delay = Optional.ofNullable(System.getProperty("debugLaunchDelay"))
+				.or(() -> Optional.of("30000"));
+		Thread.sleep(Integer.valueOf(delay.get()));
 	}
-	
+
 	protected void menuDelay(Robot robot) throws InterruptedException {
-		Thread.sleep(10000);
+		Optional<String> delay = Optional.ofNullable(System.getProperty("debugMenuDelay"))
+				.or(() -> Optional.of("10000"));
+		Thread.sleep(Integer.valueOf(delay.get()));
 	}
 
 	protected void launch() {
@@ -71,16 +79,25 @@ public class Launcher extends ActionDecorator {
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
 		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
-		click(KeyEvent.VK_DOWN, robot);
+		setGameMode(robot);
+		for (int i = 0; i < 15; i++) {
+			// future proofing a little bit... changing game mode changes number of down
+			// arrow presses to get to 'Play'
+			// so send more than needed
+			click(KeyEvent.VK_DOWN, robot);
+		}
 		click(KeyEvent.VK_ENTER, robot);
 	}
-	
+
+	protected void setGameMode(Robot robot) throws InterruptedException {
+		click(KeyEvent.VK_ENTER, robot);
+		click(KeyEvent.VK_UP, robot); // starts at offset 2, go to top
+		for (int i = 1; i < gameModeIndex; i++) {
+			click(KeyEvent.VK_DOWN, robot);
+		}
+		click(KeyEvent.VK_ENTER, robot);
+	}
+
 	protected void setMaxPlayers(Robot robot) throws InterruptedException {
 		for (int i = 0; i < 8; i++) {
 			click(KeyEvent.VK_LEFT, robot);
