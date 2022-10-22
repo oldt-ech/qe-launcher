@@ -13,7 +13,7 @@ public class ConsoleTyper extends ActionDecorator {
 
 	public ConsoleTyper(Action action, String command, String input) {
 		super(action, command);
-		this.input = "~" + input + "~";
+		this.input = "~" + input;
 	}
 
 	protected void launchDelay() throws InterruptedException {
@@ -55,6 +55,9 @@ public class ConsoleTyper extends ActionDecorator {
 			}
 
 			click(KeyEvent.VK_ENTER, robot);
+			robot.keyPress(KeyEvent.VK_SHIFT);
+			click(getEvent('~'),robot);
+			robot.keyRelease(KeyEvent.VK_SHIFT);
 			click(KeyEvent.VK_ESCAPE, robot);
 		} catch (IOException | AWTException | InterruptedException e) {
 			System.err.println(LocalDateTime.now().toString() + " - Couldn't type " + input + ". Exception " + e);
