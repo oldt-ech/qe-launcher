@@ -13,7 +13,7 @@ public class ConsoleTyper extends ActionDecorator {
 
 	public ConsoleTyper(Action action, String command, String input) {
 		super(action, command);
-		this.input = input;
+		this.input = "~" + input + "~";
 	}
 
 	protected void launchDelay() throws InterruptedException {

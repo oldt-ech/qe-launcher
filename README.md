@@ -100,6 +100,30 @@ For a one server setup or to not use my API to check for online status, the defa
 # kill all quake instances
 0001_os->kill = taskkill /F /IM Quake_x64_steam.exe /T
 
+# archive stdout and err
+0002_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_1_stderr_<TIMESTAMP>.txt" 
+0003_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_1_stdout_<TIMESTAMP>.txt" 
+0004_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_2_stderr_<TIMESTAMP>.txt" 
+0005_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_2_stdout_<TIMESTAMP>.txt" 
+0006_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_3_stderr_<TIMESTAMP>.txt" 
+0007_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_3_stdout_<TIMESTAMP>.txt" 
+0008_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_4_stderr_<TIMESTAMP>.txt" 
+0009_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_4_stdout_<TIMESTAMP>.txt" 
+0010_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_5_stderr_<TIMESTAMP>.txt" 
+0011_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_5_stdout_<TIMESTAMP>.txt" 
+0012_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_6_stderr_<TIMESTAMP>.txt" 
+0013_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
+
+# start again
+0014_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 1
+0015_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 2
+0016_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 3
+0017_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
+0018_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
+0019_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
+
+
+
 ```
 
 #### Windows task: twice hourly - restarts if server is down
@@ -112,20 +136,20 @@ For a one server setup or to not use my API to check for online status, the defa
 #-------------------------
 
 # qelauncherdown.cfg: quit if lobby disconnected or quake server unable to start previously
-0001_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
-0002_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
-0003_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
-0004_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
-0005_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
-0006_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\qelauncherdown.cfg"
+#0001_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
+#0002_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
+#0003_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
+#0004_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
+#0005_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
+#0006_os->cmd = cmd.exe /c echo quit > "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncherdown.cfg"
 
 # qelauncher.cfg: nothing here yet, just echos success
-0007_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
-0008_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
-0009_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
-0010_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
-0011_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
-0012_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\qelauncher.cfg"
+#0007_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
+#0008_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
+#0009_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
+#0010_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
+#0011_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
+#0012_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
 
 # relaunch if down, checking 30 minute uptime history
 #-------------------------

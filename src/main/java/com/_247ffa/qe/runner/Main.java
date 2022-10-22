@@ -62,8 +62,7 @@ public class Main {
 			} else if (item.getKey().contains("setGameModeIndex->")) {
 				settings.setGameModeIndex(Integer.valueOf(item.getValue()));
 			} else if (item.getKey().contains("exeConfig->")) {
-				action = new ConsoleTyper(action, item.getValue(), "~exec qelauncher.cfg");
-				action = new ConsoleTyper(action, item.getValue(), "~");
+				action = new ConsoleTyper(action, item.getValue(), "exec qelauncher.cfg");
 			} else if (item.getKey().contains("ifDownDetermine->")) {
 				online = new ServerOnlineChecker(item.getValue()).check();
 			} else if (item.getKey().contains("ifDownQuake->")) {
@@ -77,13 +76,11 @@ public class Main {
 				}
 			} else if (item.getKey().contains("ifDownExeDownConfig->")) {
 				if (!online) {
-					action = new ConsoleTyper(action, item.getValue(), "~exec qelauncherdown.cfg");
-					action = new ConsoleTyper(action, item.getValue(), "~");
+					action = new ConsoleTyper(action, item.getValue(), "exec qelauncherdown.cfg");
 				}
 			} else if (item.getKey().contains("ifDownExeConfig->")) {
 				if (!online) {
-					action = new ConsoleTyper(action, item.getValue(), "~exec qelauncher.cfg");
-					action = new ConsoleTyper(action, item.getValue(), "~");
+					action = new ConsoleTyper(action, item.getValue(), "exec qelauncher.cfg");
 				}
 			}
 
