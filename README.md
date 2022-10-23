@@ -115,18 +115,18 @@ For a one server setup or to not use my API to check for online status, the defa
 0013_os->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
 
 # start again
-0014_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 1
-0015_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 2
-0016_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 3
-0017_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
-0018_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
-0019_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
+0014_quake->launch = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 1
+0015_quake->launch = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 2
+0016_quake->launch = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 3
+0017_quake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
+0018_quake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
+0019_quake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
 
 
 
 ```
 
-#### Windows task: twice hourly - restarts if server is down
+#### Windows task: hourly - restarts if server is down
 * Program: `C:\jdk-18.0.2.1\bin\java.exe`
 * Add Arguments: `-Dprops=C:\quakeserverlauncher\validator-launcher.properties -jar C:\quakeserverlauncher\qe-runner-4.0.jar`
 * Properties:
@@ -182,19 +182,19 @@ For a one server setup or to not use my API to check for online status, the defa
 0035_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
 0036_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0035_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426333927?from=30
-0036_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_5_stderr_<TIMESTAMP>.txt"  
-0037_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_5_stdout_<TIMESTAMP>.txt" 
-0038_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0039_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
-0040_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0037_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426333927?from=30
+0038_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_5_stderr_<TIMESTAMP>.txt"  
+0039_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_5_stdout_<TIMESTAMP>.txt" 
+0040_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0041_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
+0042_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0041_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426297538?from=30
-0042_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_6_stderr_<TIMESTAMP>.txt"  
-0043_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
-0044_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0045_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
-0046_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0043_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426297538?from=30
+0044_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_6_stderr_<TIMESTAMP>.txt"  
+0045_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
+0046_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0047_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
+0048_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
 
 ```
@@ -207,4 +207,4 @@ For a one server setup or to not use my API to check for online status, the defa
 
 ## Thanks
 
-Huge thanks to everybody on the Quake Enhanced discord for testing and the great ideas.
+Huge thanks to everybody on the Quake Enhanced Discord for testing and the great ideas.
