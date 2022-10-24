@@ -63,7 +63,7 @@ The program behavior can be customized using a properties file:
 |-------------------------	|------------------------------------------						|---------------------------------------------------------------------------------------------------------------------------------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ifDownDetermine->       	| URI                                      						| N/A                                                                                                                                   	| Checks URI to see if a server is online. Sets flag internally for use in other 'ifDown' commands.                                                                                                                                                           	| Expects a report with uptime entries. [Documentation about this endpoint](https://www.247ffa.com/2022/10/server-status-api-updates-superdanman.html)  |
 | ifDownQuake->           	| Path to Quake Enhanced                   						| N/A                                                                                                                                   	| If online flag (from ifDownDetermine) is false, runs quake->                                                                                                                                                                                                	|                                                                                                                                                                                                                                                                 |
-| ifDownExeDownConfig->   	| Path to Quake Enhanced without arguments 						| N/A                                                                                                                                   	| If online flag (from ifDownDetermine) is false, focuses the Quake window, clears all Bethesda screens (escape key is pressed), and executes qelauncherdown.cfg                                                                                              	| This can be used to quit quake, by putting 'quit' in the config                                                                                                                                                                                                 |
+| ifDownExeDownConfig->   	| Path to Quake Enhanced without arguments 						| N/A                                                                                                                                   	| If online flag (from ifDownDetermine) is false, focuses the Quake window, clears all Bethesda screens (escape key is pressed), and executes qelauncherdown.cfg                                                                                              	| This can be used to quit quake, by putting 'quit' in the config. See examples below                                                                                                                                                                                                 |
 | ifDownExeConfig->       	| Path to Quake Enhanced without arguments 						| N/A                                                                                                                                   	| If online flag (from ifDownDetermine) is false, runs exeConfig->                                                                                                                                                                                            	|                                                                                                                                                                                                                                                                 |
 | ifDownOs->              	| Command line program                     						| N/A                                                                                                                                   	| If online flag (from ifDownDetermine) is false, runs os->                                                                                                                                                                                                   	| This can be used to back-up log files after lobby disconnects                                                                                                                                                                                                   |
 | os->                    	| Command line program                     						| N/A                                                                                                                                   	| Runs a general command prompt command                                                                                                                                                                                                                       	| This can be anything that you'd run at a command prompt. Useful for backing up files, etc.                                                                                                                                                                      |
@@ -152,49 +152,69 @@ For a one server setup or to not use my API to check for online status, the defa
 #0012_os->cmd = cmd.exe /c echo echo server started > "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\qelauncher.cfg"
 
 # relaunch if down, checking 30 minute uptime history
+# notes: 
+# - The notepad entries below are to catch any spare key presses. Ex: if you have 'quit' in the ifDownExeDownConfig-> config, a tilde will be pressed after entering the command
+#   in the formerly active window (the tilde is needed to close console when not using 'quit'). This tilde can cause problems with multiple instances of Quake on same machine,
+#   if not caught in notepad.
+# - The numeric value in https://api.247ffa.com/api/v1/stats/reports/online_history/1128505857... is the server id from https://api.247ffa.com/api/v1/servers
+#   Email me oldtech@247ffa.com to add yours.
+# - OS commands to back up stderr/stdout log files must be done when Quake is down, or they will be 0KB.
 #-------------------------
 
-0013_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1128505857?from=30
-0014_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_1_stderr_<TIMESTAMP>.txt"  
-0015_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_1_stdout_<TIMESTAMP>.txt" 
-0016_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0017_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 1
-0018_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0019_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426512674?from=30
-0020_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_2_stderr_<TIMESTAMP>.txt"  
-0021_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_2_stdout_<TIMESTAMP>.txt" 
-0022_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0023_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 2
-0024_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0100_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1128505857?from=30
+0110_ifDownOs->cmd = notepad
+0120_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0130_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0140_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_1_stderr_<TIMESTAMP>.txt"  
+0150_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost1\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_1_stdout_<TIMESTAMP>.txt" 
+0160_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 1
+0170_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost1\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0025_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1425838691?from=30
-0026_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_3_stderr_<TIMESTAMP>.txt"  
-0027_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_3_stdout_<TIMESTAMP>.txt" 
-0028_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0029_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 3
-0030_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0200_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426512674?from=30
+0210_ifDownOs->cmd = notepad
+0220_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0230_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0240_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_2_stderr_<TIMESTAMP>.txt"  
+0250_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost2\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_2_stdout_<TIMESTAMP>.txt" 
+0260_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 2
+0270_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost2\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0031_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426388016?from=30
-0032_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_4_stderr_<TIMESTAMP>.txt"  
-0033_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_4_stdout_<TIMESTAMP>.txt" 
-0034_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0035_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
-0036_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0300_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1425838691?from=30
+0310_ifDownOs->cmd = notepad
+0320_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0330_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0340_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_3_stderr_<TIMESTAMP>.txt"  
+0350_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost3\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_3_stdout_<TIMESTAMP>.txt" 
+0360_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 3
+0370_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost3\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0037_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426333927?from=30
-0038_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_5_stderr_<TIMESTAMP>.txt"  
-0039_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_5_stdout_<TIMESTAMP>.txt" 
-0040_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0041_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
-0042_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0400_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426388016?from=30
+0410_ifDownOs->cmd = notepad
+0420_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0430_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0440_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_4_stderr_<TIMESTAMP>.txt"  
+0450_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost4\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_4_stdout_<TIMESTAMP>.txt" 
+0460_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 4
+0470_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost4\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
-0043_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426297538?from=30
-0044_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_6_stderr_<TIMESTAMP>.txt"  
-0045_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
-0046_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
-0047_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
-0048_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0500_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426333927?from=30
+0510_ifDownOs->cmd = notepad
+0520_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0530_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0540_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_5_stderr_<TIMESTAMP>.txt"  
+0550_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost5\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_5_stdout_<TIMESTAMP>.txt" 
+0560_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 5
+0570_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost5\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+
+0600_ifDownDetermine->call https://api.247ffa.com/api/v1/stats/reports/online_history/1426297538?from=30
+0610_ifDownOs->cmd = notepad
+0620_ifDownExeDownConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
+0630_ifDownOs->cmd = taskkill /F /IM notepad.exe /T
+0640_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stderr.txt" "C:\\quakeserverlauncher\\log_6_stderr_<TIMESTAMP>.txt"  
+0650_ifDownOs->cmd = cmd.exe /c move "C:\\Sandbox\\use\\quakehost6\\user\\current\\Saved Games\\Nightdive Studios\\Quake\\stdout.txt" "C:\\quakeserverlauncher\\log_6_stdout_<TIMESTAMP>.txt" 
+0660_ifDownQuake->launch = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe -skipmovies +g_showintromovie 0 +developer 1 +saved2 6
+0670_ifDownExeConfig->focus = C:\\Sandbox\\use\\quakehost6\\drive\\C\\Program Files (x86)\\Steam\\steamapps\\common\\Quake\\rerelease\\Quake_x64_steam.exe
 
 
 ```
