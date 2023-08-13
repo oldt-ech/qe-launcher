@@ -1,1 +1,1 @@
-# qe-launcher
+Moved: (https://www.247ffa.com/)
