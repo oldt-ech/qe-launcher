@@ -1,1 +1,1 @@
-Moved: (https://www.247ffa.com/)
+Moved to https://www.247ffa.com/
